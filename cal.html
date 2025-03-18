@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajveer Singh's Scientific Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1e1e2f;
+            transition: background 0.3s ease;
+        }
+
+        body.light {
+            background: #f0f0f5;
+        }
+
+        .calculator {
+            background: #2a2a3b;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            transition: background 0.3s ease;
+        }
+
+        .calculator.light {
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .display {
+            width: 100%;
+            height: 80px;
+            background: #1e1e2f;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 24px;
+            text-align: right;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .calculator.light .display {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: #00c4cc;
+            color: #fff;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: #00b0b9;
+        }
+
+        .operator {
+            background: #d3d3d3;
+            color: #333;
+        }
+
+        .operator:hover {
+            background: #c0c0c0;
+        }
+
+        .special {
+            background: #ff9500;
+        }
+
+        .special:hover {
+            background: #e08500;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #ff9500;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: #e08500;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            color: #fff;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .calculator.light .watermark {
+            color: #333;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .calculator {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    <div class="calculator">
+        <div class="watermark">Rajveer Singh</div>
+        <input type="text" class="display" id="display" readonly>
+        <div class="buttons">
+            <button class="operator" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendToDisplay('(')">(</button>
+            <button class="operator" onclick="appendToDisplay(')')">)</button>
+            <button class="special" onclick="appendToDisplay('Math.sqrt(')">√</button>
+            <button class="operator" onclick="deleteLast()">⌫</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="special" onclick="appendToDisplay('Math.pow(')">xⁿ</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            <button class="special" onclick="appendToDisplay('Math.sin(')">sin</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            <button class="special" onclick="appendToDisplay('Math.cos(')">cos</button>
+
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="special" onclick="calculate()">=</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="special" onclick="appendToDisplay('Math.tan(')">tan</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendToDisplay(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                display.value = eval(display.value.replace('Math.', 'Math.'));
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(clearDisplay, 1000);
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light');
+            document.querySelector('.calculator').classList.toggle('light');
+        }
+    </script>
+</body>
+</html>
